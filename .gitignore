@@ -4,7 +4,4 @@ package-lock.json
 **/node_modules
 downloads
 **/dist/**
-/environment/.env*
-!/environment/.env.sample
-!/environment/.env*.sample
 .idea
