@@ -44,7 +44,7 @@ class Main {
     try {
       const app = express();
 
-      app.use(cors());
+      app.use(cors({ origin: "*" }));
       app.use(express.json());
       swaggerDocs(app);
 
@@ -69,7 +69,7 @@ class Main {
   };
 
   private initSocket(server: Server) {
-    this.io = new SocketIOServer(server);
+    this.io = new SocketIOServer(server, { cors: { origin: "*" } });
 
     this.triggerSocketTodoUpdate();
 
@@ -107,7 +107,7 @@ class Main {
 
   private handleGetRequest = (_: Request, res: Response) => {
     this.processRequest(_, res, () => {
-      console.log("[GET] Todos: ", this.todos);
+      console.log("[GET] Current todos: ", this.todos);
 
       res.status(200).send(this.todos);
     });
@@ -131,7 +131,8 @@ class Main {
       const todo: ITodo = { _id, description, name, progress };
       this.todos.push(todo);
 
-      console.log("[POST] Todos: ", this.todos);
+      console.log("[POST] Added: ", todo);
+      console.log("[POST] Current todos: ", this.todos);
 
       return res.status(200).send(todo);
     });
@@ -149,7 +150,8 @@ class Main {
       targetTodo.description = name || targetTodo.name;
       targetTodo.progress = progress ?? targetTodo.progress;
 
-      console.log("[PUT] Todos: ", this.todos);
+      console.log(`[PUT] Updated ${_id} with ${description}|${name}|${progress}`);
+      console.log("[PUT] Current todos: ", this.todos);
 
       res.status(200).send(this.todos);
     });
@@ -165,6 +167,7 @@ class Main {
 
       this.todos.splice(targetTodoIndex, 1);
 
+      console.log(`[DELETE] Removed ${_id} todo`);
       console.log("[DELETE] Todos: ", this.todos);
 
       const response: IDefaultResponse = { success: true };
