@@ -50,6 +50,8 @@ class Main {
 
       app.get(`/${PATH.API}/${PATH.TODOS}`, this.handleGetRequest);
 
+      app.get(`/${PATH.API}/${PATH.TODOS}/:_id`, this.handleGetByIdRequest);
+
       app.post(`/${PATH.API}/${PATH.TODOS}`, this.handlePostRequest);
 
       app.put(`/${PATH.API}/${PATH.TODOS}`, this.handlePutRequest);
@@ -135,6 +137,20 @@ class Main {
       console.log("[POST] Current todos: ", this.todos);
 
       return res.status(200).send(todo);
+    });
+  };
+
+  private handleGetByIdRequest = (req: Request, res: Response) => {
+    this.processRequest(req, res, () => {
+      const { _id } = req.params;
+      if (!_id) return this.sendBadRequestResponse("_id", res);
+
+      const targetTodo = this.todos.find((t) => t._id === _id);
+      if (!targetTodo) return this.sendNotFoundResponse("todo", res);
+
+      console.log("[GET by id] Found: ", this.todos);
+
+      return res.status(200).send(targetTodo);
     });
   };
 

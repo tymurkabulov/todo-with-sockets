@@ -153,6 +153,59 @@ export const todosRoutes = {
     },
   },
   "/todos/{_id}": {
+    get: {
+      summary: "Get todo by id",
+      tags: [
+        "todos",
+      ],
+      parameters: [
+        {
+          $ref: "#/components/parameters/_idParam",
+        },
+      ],
+      responses: {
+        200: {
+          description: "Todo Item",
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/TodoItem",
+              },
+            },
+          },
+        },
+        400: {
+          description: "Bad Request",
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/responses/ErrorResponse",
+              },
+            },
+          },
+        },
+        404: {
+          description: "TODO not found",
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/responses/ErrorResponse",
+              },
+            },
+          },
+        },
+        500: {
+          description: "Unexpected error",
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/responses/ErrorResponse",
+              },
+            },
+          },
+        },
+      },
+    },
     delete: {
       summary: "Deletes a TODO",
       tags: [
