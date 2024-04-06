@@ -147,7 +147,7 @@ class Main {
       if (!targetTodo) return this.sendNotFoundResponse("todo", res);
 
       targetTodo.description = description || targetTodo.description;
-      targetTodo.description = name || targetTodo.name;
+      targetTodo.name = name || targetTodo.name;
       targetTodo.progress = progress ?? targetTodo.progress;
 
       console.log(`[PUT] Updated ${_id} with ${description}|${name}|${progress}`);
